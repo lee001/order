@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * 客户端采用轮询方式调用商品服务端, 启动8081端口, 访问地址: http://localhost:8081/getProductMsg
+ */
 @RestController
 @Slf4j
 public class ClientController {
