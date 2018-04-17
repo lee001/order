@@ -1,5 +1,6 @@
 package com.example.order.controller;
 
+import com.example.order.client.ProductClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -21,6 +22,13 @@ public class ClientController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ProductClient productClient;
+
+    /**
+     * restTemplate调用
+     * @return
+     */
     @GetMapping("/getProductMsg")
     public String getProductMsg() {
 
@@ -40,6 +48,17 @@ public class ClientController {
 
         //4.自定义负载均衡策略
 
+        return response;
+    }
+
+    /**
+     * Feign使用
+     * @return
+     */
+    @GetMapping("/getProductMsg2")
+    public String getProductMsg2() {
+        String response = productClient.productMsg();
+        log.info("response={}", response);
         return response;
     }
 }
