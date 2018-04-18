@@ -1,13 +1,19 @@
 package com.example.order.controller;
 
 import com.example.order.client.ProductClient;
+import com.example.order.dataobject.ProductInfo;
+import com.example.order.dto.CartDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 客户端采用轮询方式调用商品服务端, 启动8081端口, 访问地址: http://localhost:8081/getProductMsg
@@ -60,5 +66,28 @@ public class ClientController {
         String response = productClient.productMsg();
         log.info("response={}", response);
         return response;
+    }
+
+    /**
+     * 测试获取商品列表
+     * @return
+     */
+    @GetMapping("getProductList")
+    public String getProductList() {
+        List<ProductInfo> productInfoList = productClient.listForOrder(Arrays.asList("123456"));
+
+        log.info("response={}", productInfoList);
+
+        return "ok";
+    }
+
+    /**
+     * 测试扣库存
+     * @return
+     */
+    @GetMapping("decreaseStock")
+    public String decreaseStock() {
+        productClient.decreaseStock(Arrays.asList(new CartDTO("123456", 2)));
+        return "ok";
     }
 }
